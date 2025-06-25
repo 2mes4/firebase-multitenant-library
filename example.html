@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>MultiTenant Firebase Example</title>
+  <script type="module">
+    import {
+      initFirebase,
+      getCurrentUser,
+      ensureCompanySelected,
+      getListOfCompanies,
+      getCompanyPath
+    } from './src/index.js';
+
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+    };
+
+    initFirebase(firebaseConfig);
+
+    (async () => {
+      await getCurrentUser();
+
+      const selectedCompany = await ensureCompanySelected();
+      if (!selectedCompany) {
+        const companies = await getListOfCompanies();
+        console.log('Selecciona una empresa desde el UI:', companies);
+      } else {
+        console.log('Empresa seleccionada automáticamente:', selectedCompany);
+        console.log('Path de customers:', getCompanyPath('customers'));
+      }
+    })();
+  </script>
+</head>
+<body>
+  <h1>MultiTenant Firebase App</h1>
+</body>
+</html>
